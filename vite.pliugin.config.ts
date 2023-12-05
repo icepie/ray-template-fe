@@ -132,7 +132,7 @@ function baseOptions(mode: string) {
       defaultImport: 'url', // 默认以 url 形式导入 svg
     }),
     viteEslint({
-      lintOnStart: true,
+      lintOnStart: false,
       failOnError: true,
       failOnWarning: true,
       fix: true,

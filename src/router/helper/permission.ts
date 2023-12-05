@@ -86,7 +86,11 @@ export const permissionRouter = (router: Router) => {
       if (isToLogin(to, from)) {
         next()
       } else {
-        next('/')
+        const redirect = encodeURIComponent(to.fullPath)
+        next({
+          path: '/',
+          query: { redirect },
+        })
       }
     }
   })

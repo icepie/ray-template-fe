@@ -45,7 +45,6 @@ export default defineConfig(async ({ mode }) => {
         'vue-i18n',
         'naive-ui',
         '@vueuse/core',
-        'vue-demi',
         'dayjs',
         'echarts',
         'xlsx',

@@ -4,9 +4,9 @@ import { vueRouterRegister } from '@/router/helper/routerCopilot'
 import { useVueRouter } from '@/hooks/web'
 
 import constantRoutes from './routes'
-
 import type { App } from 'vue'
 import type { RouteRecordRaw, Router } from 'vue-router'
+import { createWebHistory } from 'vue-router'
 
 export let router: Router
 
@@ -17,7 +17,7 @@ export let router: Router
  */
 const createVueRouter = async () => {
   return createRouter({
-    history: createWebHashHistory(),
+    history: createWebHistory(),
     routes: (await constantRoutes()) as unknown as RouteRecordRaw[],
     scrollBehavior: (to) => {
       scrollViewToTop(to)

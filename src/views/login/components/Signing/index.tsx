@@ -57,7 +57,11 @@ export default defineComponent({
                   setStorage(APP_CATCH_KEY.token, 'tokenValue')
                   setStorage(APP_CATCH_KEY.signing, res.data)
 
-                  router.push(getRootPath.value)
+                  const { redirect = getRootPath.value } =
+                    router.currentRoute.value.query
+                  const redirectUrl = decodeURIComponent(redirect as string)
+
+                  router.push(redirectUrl)
                 }, 2 * 1000)
               }
             })

@@ -47,7 +47,7 @@ import type { BuildOptions } from 'vite'
 
 const config: AppConfigExport = {
   /** 公共基础路径配置, 如果为空则会默认以 '/' 填充 */
-  base: '/ray-template/',
+  base: '/',
   /** 配置首屏加载信息 */
   preloadingConfig: PRE_LOADING_CONFIG,
   /** 默认主题色(不可省略, 必填), 也用于 ejs 注入 */
@@ -118,23 +118,23 @@ const config: AppConfigExport = {
       return {
         outDir: dirPath,
         sourcemap: false,
-        terserOptions: {
-          compress: {
-            drop_console: true,
-            drop_debugger: true,
-          },
-        },
+        // terserOptions: {
+        //   // compress: {
+        //   //   drop_console: true,
+        //   //   drop_debugger: true,
+        //   // },
+        // },
       }
     } else {
       return {
         outDir: dirPath,
         sourcemap: true,
-        terserOptions: {
-          compress: {
-            drop_console: false,
-            drop_debugger: false,
-          },
-        },
+        // terserOptions: {
+        //   // compress: {
+        //   //   drop_console: false,
+        //   //   drop_debugger: false,
+        //   // },
+        // },
       }
     }
   },

@@ -59,6 +59,7 @@ export const piniaMenuStore = defineStore(
       breadcrumbOptions: [], // 面包屑菜单
       currentMenuOption: null, // 当前激活菜单项
     })
+
     const isSetupAppMenuLock = ref(true)
 
     /**

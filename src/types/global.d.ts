@@ -46,8 +46,8 @@ export declare global {
     $loadingBar: LoadingBarApi
     $notification: NotificationApi
 
-    DocsAPI?: any
-    DocEditor?: any
+    // DocsAPI?: any
+    // DocEditor?: any
 
     msCrypto: Crypto
   }

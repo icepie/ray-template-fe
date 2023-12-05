@@ -39,8 +39,8 @@ export const APP_KEEP_ALIVE: Readonly<AppKeepAlive> = {
  * 其中 title 属性会是默认的浏览器标题（初始化时）
  */
 export const PRE_LOADING_CONFIG: PreloadingConfig = {
-  title: 'Ray Template',
-  tagColor: '#ff6700',
+  title: 'Hi~ 欢迎使用!',
+  tagColor: '#2d8cf0',
   titleColor: '#2d8cf0',
 }
 
