@@ -8,6 +8,7 @@ import { useSigningActions } from '@/store'
 import { useAppRoot } from '@/hooks/template'
 
 import type { FormInst } from 'naive-ui'
+import { authLogin } from '@/api/auth/login'
 
 export default defineComponent({
   name: 'RSigning',
@@ -20,7 +21,7 @@ export default defineComponent({
     const globalSpinning = getVariableToRefs('globalSpinning')
 
     const useSigningForm = () => ({
-      name: 'Ray Admin',
+      name: 'admin',
       pwd: '123456',
     })
 
@@ -42,32 +43,41 @@ export default defineComponent({
 
     /** 普通登陆形式 */
     const handleLogin = () => {
-      loginFormRef.value?.validate((valid) => {
+      loginFormRef.value?.validate(async (valid) => {
         if (!valid) {
           setVariable('globalSpinning', true)
 
           signing(signingForm.value)
-            .then((res) => {
-              if (res.code === 0) {
-                setTimeout(() => {
-                  setVariable('globalSpinning', false)
+          //   .then(async (res) => {
+          // if (res.code === 0) {
+          //   // setTimeout(() => {
+          //   setVariable('globalSpinning', false)
 
-                  window.$message.success(`欢迎${signingForm.value.name}登陆~`)
-
-                  setStorage(APP_CATCH_KEY.token, 'tokenValue')
-                  setStorage(APP_CATCH_KEY.signing, res.data)
-
-                  const { redirect = getRootPath.value } =
-                    router.currentRoute.value.query
-                  const redirectUrl = decodeURIComponent(redirect as string)
-
-                  router.push(redirectUrl)
-                }, 2 * 1000)
-              }
+          try {
+            const authResp = await authLogin({
+              username: signingForm.value.name,
+              password: signingForm.value.pwd,
             })
-            .catch(() => {
-              window.$message.error('不可以这样哟, 不可以哟')
-            })
+
+            if (authResp.code === 0) {
+              window.$message.success(`欢迎${signingForm.value.name}登陆~`)
+
+              setStorage(APP_CATCH_KEY.token, authResp.data.token)
+              setStorage(APP_CATCH_KEY.signing, authResp.data.userInfo)
+
+              const { redirect = getRootPath.value } =
+                router.currentRoute.value.query
+              const redirectUrl = decodeURIComponent(redirect as string)
+
+              router.push(redirectUrl)
+            } else {
+              window.$message.error(authResp.message)
+            }
+          } catch (error: unknown) {
+            window.$message.error((error as BaseResp).message)
+          }
+
+          setVariable('globalSpinning', false)
         }
       })
     }

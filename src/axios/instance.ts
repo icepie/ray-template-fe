@@ -67,6 +67,13 @@ server.interceptors.response.use(
     setupResponseErrorInterceptor() // 注入响应失败待执行队列
     fetchError('responseError', error, 'implementResponseInterceptorErrorArray') // 执行响应失败后拦截器
 
+    const { response } = error
+
+    if (response) {
+      const { data } = response
+      return Promise.reject(data)
+    }
+
     return Promise.reject(error)
   },
 )

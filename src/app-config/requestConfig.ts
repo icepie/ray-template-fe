@@ -13,7 +13,7 @@ import type { AxiosConfig } from '@/types/modules/appConfig'
 
 /** axios 相关配置 */
 export const AXIOS_CONFIG: AxiosConfig = {
-  baseURL: '', // `const { MODE } = getAppEnvironment()`,
+  baseURL: 'http://127.0.0.1:3000', // `const { MODE } = getAppEnvironment()`,
   withCredentials: false, // 是否允许跨域携带 `cookie`
   timeout: 5 * 1000,
   headers: {

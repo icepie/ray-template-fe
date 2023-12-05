@@ -47,9 +47,11 @@ const requestHeaderToken = (ins: RequestInterceptorConfig, mode: string) => {
     // TODO: 根据 url 不同是否设置 token
   }
 
+  console.log('token', token)
+
   return {
-    key: 'X-TOKEN',
-    value: token,
+    key: 'Authorization',
+    value: `Bearer ${token}`,
   }
 }
 
@@ -60,10 +62,10 @@ const injectRequestHeaders: BeforeFetchFunction<RequestInterceptorConfig> = (
 ) => {
   appendRequestHeaders(ins, [
     requestHeaderToken(ins, mode),
-    {
-      key: 'Demo-Header-Key',
-      value: 'Demo Header Value',
-    },
+    // {
+    //   key: 'Demo-Header-Key',
+    //   value: 'Demo Header Value',
+    // },
   ])
 }
 
