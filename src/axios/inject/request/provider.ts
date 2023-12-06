@@ -44,9 +44,9 @@ import { useUserInfoActions, useUserInfoGetters } from '@/store'
 const requestHeaderToken = (ins: RequestInterceptorConfig, mode: string) => {
   const { getToken } = useUserInfoGetters()
 
-  if (ins.url) {
-    // TODO: 根据 url 不同是否设置 token
-  }
+  // if (ins.needAuth) {
+  //   // TODO: 根据 url 不同是否设置 token
+  // }
 
   return {
     key: 'Authorization',
@@ -59,13 +59,18 @@ const injectRequestHeaders: BeforeFetchFunction<RequestInterceptorConfig> = (
   ins,
   mode,
 ) => {
-  appendRequestHeaders(ins, [
-    requestHeaderToken(ins, mode),
-    // {
-    //   key: 'Demo-Header-Key',
-    //   value: 'Demo Header Value',
-    // },
-  ])
+  // appendRequestHeaders(ins, [
+  //   // ins.needAuth :requestHeaderToken(ins, mode),
+  //   ins.needAuth && requestHeaderToken(ins, mode),
+  //   // {
+  //   //   key: 'Demo-Header-Key',
+  //   //   value: 'Demo Header Value',
+  //   // },
+  // ])
+
+  if (ins.needAuth) {
+    appendRequestHeaders(ins, [requestHeaderToken(ins, mode)])
+  }
 }
 
 /**

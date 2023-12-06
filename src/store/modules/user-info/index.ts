@@ -1,8 +1,7 @@
-import { getProfile } from '@/api/auth/login'
+import { getProfile } from '@/api/auth'
 import { APP_CATCH_KEY } from '@/app-config/appConfig'
 import { getStorage, removeStorage } from '@/utils/cache'
 import { isEmpty } from 'lodash-es'
-import { useTimeout } from '@vueuse/core'
 
 export const piniaUserInfoStore = defineStore(
   'userInfo',
@@ -48,9 +47,6 @@ export const piniaUserInfoStore = defineStore(
       state.token = ''
 
       state.userInfo = {} as userInfo
-
-      // s.reset()
-
       window.$message.info('账号退出中...')
 
       removeStorage('all-sessionStorage')

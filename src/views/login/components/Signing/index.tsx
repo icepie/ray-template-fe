@@ -7,7 +7,7 @@ import { setVariable, getVariableToRefs } from '@/global-variable'
 import { useAppRoot } from '@/hooks/template'
 
 import type { FormInst } from 'naive-ui'
-import { authLogin } from '@/api/auth/login'
+import { authLogin } from '@/api/auth'
 import { useUserInfoActions } from '@/store'
 
 export default defineComponent({
