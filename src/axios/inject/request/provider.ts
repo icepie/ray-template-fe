@@ -47,8 +47,6 @@ const requestHeaderToken = (ins: RequestInterceptorConfig, mode: string) => {
     // TODO: 根据 url 不同是否设置 token
   }
 
-  console.log('token', token)
-
   return {
     key: 'Authorization',
     value: `Bearer ${token}`,

@@ -27,7 +27,6 @@ import { getStorage } from '@/utils/cache'
 
 import type { PropType } from 'vue'
 import type { AvatarProps, SpaceProps } from 'naive-ui'
-import type { SigningCallback } from '@/store/modules/signing/type'
 
 const AppAvatar = defineComponent({
   name: 'AppAvatar',
@@ -48,7 +47,7 @@ const AppAvatar = defineComponent({
     },
   },
   setup(props) {
-    const signing = getStorage<SigningCallback>(APP_CATCH_KEY.signing)
+    const signing = getStorage<userInfo>(APP_CATCH_KEY.userInfo)
     const cssVars = computed(() => {
       const vars = {
         '--app-avatar-cursor': props.cursor,

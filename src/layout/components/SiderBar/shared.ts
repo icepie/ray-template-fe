@@ -1,5 +1,5 @@
 import { useI18n } from '@/hooks/web'
-import { useSigningActions, useSettingActions } from '@/store'
+import { useSettingActions, useUserInfoActions } from '@/store'
 
 import type { IconOptionsFC, IconOptions } from './type'
 
@@ -37,7 +37,7 @@ const avatarDropdownActionMap = {
    * 清除所有 session 缓存并且重定向至登录页
    */
   logout: () => {
-    const { logout } = useSigningActions()
+    const { logout } = useUserInfoActions()
 
     window.$dialog.warning({
       title: '提示',

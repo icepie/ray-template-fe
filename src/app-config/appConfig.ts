@@ -107,7 +107,7 @@ export const APP_MENU_CONFIG: Readonly<AppMenuConfig> = {
  *   - token: token key
  */
 export const APP_CATCH_KEY = {
-  signing: 'signing',
+  userInfo: 'userInfo',
   localeLanguage: 'localeLanguage',
   token: 'token',
 } as const

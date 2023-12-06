@@ -30,11 +30,14 @@ import { useAppRoot } from '@/hooks/template'
 
 import type { Router, RouteLocationNormalized } from 'vue-router'
 import type { AppRouteMeta } from '@/router/type'
+import { isEmpty } from 'lodash-es'
+import { useUserInfoGetters } from '@/store'
 
 /** 路由守卫 */
 export const permissionRouter = (router: Router) => {
   const { beforeEach } = router
   const { getRootPath } = useAppRoot()
+  const { getToken } = useUserInfoGetters()
 
   const isToLogin = (
     to: RouteLocationNormalized,
@@ -42,7 +45,10 @@ export const permissionRouter = (router: Router) => {
   ) => to.path === '/' || from.path === '/login'
 
   beforeEach((to, from, next) => {
-    const token = getStorage<string>(APP_CATCH_KEY.token)
+    // const token = getStorage<string>(APP_CATCH_KEY.token)
+
+    const token = getToken.value
+
     const catchRoutePath = getStorage(
       'menuKey',
       'sessionStorage',
@@ -51,7 +57,7 @@ export const permissionRouter = (router: Router) => {
     const { meta, name } = to
 
     /** 是否含有 token */
-    if (token !== null) {
+    if (!isEmpty(token)) {
       /** 是否在有 token 时去到登陆页 */
       if (isToLogin(to, from)) {
         redirectRouterToDashboard(true)

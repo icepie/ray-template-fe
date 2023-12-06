@@ -14,12 +14,12 @@ import { SETUP_ROUTER_ACTION, SUPER_ADMIN } from '@/app-config/routerConfig'
 import { useVueRouter } from '@/hooks/web'
 import { setStorage } from '@/utils/cache'
 import { getAppEnvironment } from '@/utils/basic'
-import { useSigningGetters } from '@/store'
 import { useAppRoot } from '@/hooks/template'
 
 import type { Router } from 'vue-router'
 import type { AppRouteMeta } from '@/router/type'
 import type { AppMenuOption } from '@/types/modules/app'
+import { useUserInfoGetters } from '@/store'
 
 /**
  *
@@ -29,13 +29,11 @@ import type { AppMenuOption } from '@/types/modules/app'
  * 如果为超级管理员, 则会默认获取所有权限
  */
 export const validRole = (meta: AppRouteMeta) => {
-  const { getSigningCallback } = useSigningGetters()
+  const { getUserInfo } = useUserInfoGetters()
+
   const { role: metaRole } = meta
 
-  if (
-    SUPER_ADMIN?.length &&
-    SUPER_ADMIN.includes(getSigningCallback.value.role)
-  ) {
+  if (SUPER_ADMIN?.length && SUPER_ADMIN.includes(getUserInfo.value.role)) {
     return true
   } else {
     // 如果 role 为 undefined 或者空数组, 则认为该路由不做权限过滤
@@ -45,7 +43,7 @@ export const validRole = (meta: AppRouteMeta) => {
 
     // 判断是否含有该权限
     if (metaRole) {
-      return metaRole.includes(getSigningCallback.value.role)
+      return metaRole.includes(getUserInfo.value.role)
     }
 
     return true

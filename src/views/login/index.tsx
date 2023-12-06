@@ -22,9 +22,6 @@ import ThemeSwitch from '@/layout/components/SiderBar/components/SettingDrawer/c
 import { LOCAL_OPTIONS } from '@/app-config/localConfig'
 import { useWindowSize } from '@vueuse/core'
 import { useSettingActions } from '@/store'
-import { getProfile } from '@/api/auth/login'
-import { setStorage } from '@/utils/cache'
-import { APP_CATCH_KEY } from '@/app-config/appConfig'
 
 const Login = defineComponent({
   name: 'RLogin',
