@@ -1,4 +1,4 @@
-import { useI18n } from '@/hooks/web'
+import { useI18n, useVueRouter } from '@/hooks/web'
 import { useSettingActions, useUserInfoActions } from '@/store'
 
 import type { IconOptionsFC, IconOptions } from './type'
@@ -57,6 +57,16 @@ const avatarDropdownActionMap = {
     const { updateSettingState } = useSettingActions()
 
     updateSettingState('lockScreenSwitch', true)
+  },
+
+  /**
+   *
+   * 个人信息
+   */
+  person: () => {
+    window.$message.info('这个人很懒, 没做这个功能~')
+    const { router } = useVueRouter()
+    router.push('profile')
   },
 }
 

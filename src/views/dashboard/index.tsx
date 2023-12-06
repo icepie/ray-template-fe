@@ -12,7 +12,6 @@ import {
 } from 'naive-ui'
 import { RIcon } from '@/components'
 import RayLink from '@/app-components/app/RayLink'
-import { useUserInfoActions } from '@/store'
 
 const Dashboard = defineComponent({
   name: 'RDashboard',
