@@ -8,6 +8,10 @@ export const useUserInfoGetters = () => {
    * @remark 获取用户信息
    */
 
+  // const getUserInfo = computed(() => variable.state.userInfo)
+
+  // refreshUserInfo
+
   const getUserInfo = computed(() => variable.state.userInfo)
 
   const getToken = computed(() => variable.state.token)
@@ -19,11 +23,13 @@ export const useUserInfoGetters = () => {
 }
 
 export const useUserInfoActions = () => {
-  const { setUserInfo, setToken, logout } = piniaUserInfoStore()
+  const { setUserInfo, setToken, logout, refreshUserInfo } =
+    piniaUserInfoStore()
 
   return {
     setUserInfo,
     setToken,
+    refreshUserInfo,
     logout,
   }
 }

@@ -8,8 +8,7 @@ import { useAppRoot } from '@/hooks/template'
 
 import type { FormInst } from 'naive-ui'
 import { authLogin } from '@/api/auth/login'
-import { set } from 'lodash-es'
-import { useUserInfoActions, useUserInfoGetters } from '@/store'
+import { useUserInfoActions } from '@/store'
 
 export default defineComponent({
   name: 'RSigning',

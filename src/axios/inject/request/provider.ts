@@ -31,6 +31,7 @@ import type {
   FetchErrorFunction,
 } from '@/axios/type'
 import type { Recordable } from '@/types/modules/helper'
+import { useUserInfoActions, useUserInfoGetters } from '@/store'
 
 /**
  *
@@ -41,7 +42,7 @@ import type { Recordable } from '@/types/modules/helper'
  * 当然你也可以根据 request instance 来特殊处理, 这里暂时不做演示
  */
 const requestHeaderToken = (ins: RequestInterceptorConfig, mode: string) => {
-  const token = getStorage<string>(APP_CATCH_KEY.token)
+  const { getToken } = useUserInfoGetters()
 
   if (ins.url) {
     // TODO: 根据 url 不同是否设置 token
@@ -49,7 +50,7 @@ const requestHeaderToken = (ins: RequestInterceptorConfig, mode: string) => {
 
   return {
     key: 'Authorization',
-    value: `Bearer ${token}`,
+    value: `Bearer ${getToken.value}`,
   }
 }
 

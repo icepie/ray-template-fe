@@ -31,13 +31,15 @@ import { useAppRoot } from '@/hooks/template'
 import type { Router, RouteLocationNormalized } from 'vue-router'
 import type { AppRouteMeta } from '@/router/type'
 import { isEmpty } from 'lodash-es'
-import { useUserInfoGetters } from '@/store'
+import { useUserInfoActions, useUserInfoGetters } from '@/store'
 
 /** 路由守卫 */
 export const permissionRouter = (router: Router) => {
   const { beforeEach } = router
   const { getRootPath } = useAppRoot()
   const { getToken } = useUserInfoGetters()
+
+  const { refreshUserInfo } = useUserInfoActions()
 
   const isToLogin = (
     to: RouteLocationNormalized,
@@ -81,6 +83,9 @@ export const permissionRouter = (router: Router) => {
                 redirectRouterToDashboard(true)
               }
             } else {
+              if (from.path === '/') {
+                refreshUserInfo()
+              }
               next()
             }
           } else {
