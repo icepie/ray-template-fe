@@ -72,7 +72,6 @@ export default defineComponent({
               }
 
               setToken(authResp.data.token)
-
               // setStorage(APP_CATCH_KEY.token, authResp.data.token)
               // setStorage(APP_CATCH_KEY.signing, authResp.data.userInfo)
 

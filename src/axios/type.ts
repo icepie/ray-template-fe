@@ -28,6 +28,7 @@ export interface CancelConfig {
 
 export interface AppRawRequestConfig<T = any> extends AxiosRequestConfig<T> {
   cancelConfig?: CancelConfig
+  needAuth?: boolean
 }
 
 export interface AxiosInstanceExpand extends Axios {

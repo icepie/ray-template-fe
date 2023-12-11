@@ -55,7 +55,6 @@ const avatarDropdownActionMap = {
    */
   lockScreen: () => {
     const { updateSettingState } = useSettingActions()
-
     updateSettingState('lockScreenSwitch', true)
   },
 

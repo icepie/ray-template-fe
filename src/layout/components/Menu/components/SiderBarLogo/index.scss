@@ -19,13 +19,13 @@
   gap: 8px 12px;
   font-weight: 600;
   overflow: hidden;
-  border-right: solid 1px var(--n-border-color);
+  // border-right: solid 1px var(--n-border-color);
 
   &.ray-menu__logo-url {
     position: sticky;
     top: 0;
     cursor: pointer;
-    background-color: var(--n-color);
+    // background-color: var(--n-color);
     z-index: 20;
   }
 
