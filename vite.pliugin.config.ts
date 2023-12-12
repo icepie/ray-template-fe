@@ -117,6 +117,9 @@ function baseOptions(mode: string) {
       ],
       resolvers: [NaiveUiResolver()],
     }),
+    // veauryVitePlugins({
+    //   type: 'vue'
+    // }),
     unpluginViteComponents({
       dts: './unplugin/components.d.ts',
       resolvers: [NaiveUiResolver()],

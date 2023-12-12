@@ -19,7 +19,6 @@ import {
   NSwitch,
   NSpace,
   NPopover,
-  NCard,
 } from 'naive-ui'
 import { RCollapseGrid, RTable, RIcon, RMoreDropdown } from '@/components'
 
@@ -38,7 +37,7 @@ type RowData = {
 
 const UserManage = defineComponent({
   name: 'UserManage',
-  async setup() {
+  setup() {
     const baseColumns = [
       {
         title: 'ID',
@@ -111,7 +110,6 @@ const UserManage = defineComponent({
         maxWidth: 300,
         minWidth: 100,
       },
-
       {
         title: 'Action',
         key: 'actions',
@@ -161,19 +159,47 @@ const UserManage = defineComponent({
       window.$message.info(`${key}`)
     }
 
-    const tableData = ref<User[]>([])
-
-    const userList = ref<User[]>([])
-
-    const GetUserListReq = ref<GetUserListReq>({
+    const paginationRef = reactive({
       page: 1,
       pageSize: 10,
+      itemCount: 0,
+      pageSizes: [10, 20, 30, 40, 50],
+      showSizePicker: true,
+      onUpdatePage: (page: number) => {
+        paginationRef.page = page
+
+        refreshUserList()
+      },
+      onUpdatePageSize: (pageSize: number) => {
+        paginationRef.pageSize = pageSize
+        paginationRef.page = 1
+
+        refreshUserList()
+      },
+    })
+
+    const tableData = ref<User[]>([])
+
+    const userListData = ref<ListResp<User> | null>(null)
+
+    watchEffect(() => {
+      if (userListData.value) {
+        paginationRef.itemCount = userListData.value.total
+      }
+    })
+
+    onBeforeMount(() => {
+      refreshUserList()
     })
 
     const refreshUserList = async () => {
       try {
-        const resp = await GetUserList(GetUserListReq.value)
+        const resp = await GetUserList({
+          page: paginationRef.page,
+          pageSize: paginationRef.pageSize,
+        })
         tableData.value = resp.data.list
+        userListData.value = resp.data
 
         console.log(resp)
         console.log(tableData.value)
@@ -182,18 +208,20 @@ const UserManage = defineComponent({
       }
     }
 
-    onMounted(() => {
-      refreshUserList()
-      //   window.$message.info('我是 UserManage 页面的 mounted 钩子函数')
-    })
+    // 新增
+    const handleAdd = () => {
+      window.$message.info('新增')
+    }
 
     return {
       ...toRefs(state),
       tableData,
+      paginationRef,
       actionColumns,
       baseColumns,
       tableMenuOptions,
       handleMenuSelect,
+      handleAdd,
     }
   },
   render() {
@@ -242,17 +270,20 @@ const UserManage = defineComponent({
           scrollX={2000}
           title={
             <NSpace align="center">
-              <span>标题插槽:</span>
-              <NSwitch
+              {/* <span>标题插槽:</span> */}
+              {/* <NSwitch
                 onUpdateValue={(value: boolean) => (this.tableLoading = value)}
-              ></NSwitch>
+              ></NSwitch> */}
+              <NButton type="primary" onClick={this.handleAdd}>
+                新增
+              </NButton>
+              <NButton>导出</NButton>
             </NSpace>
           }
           data={this.tableData}
+          pagination={this.paginationRef}
           v-model:columns={this.actionColumns}
-          pagination={{
-            pageSize: 10,
-          }}
+          remote
           contextMenuOptions={this.tableMenuOptions}
           loading={this.tableLoading}
           onContextMenuClick={this.handleMenuSelect.bind(this)}
@@ -273,12 +304,7 @@ const UserManage = defineComponent({
               }}
             </NPopover>,
           ]}
-        >
-          {{
-            tableFooter: () => '表格的底部内容区域插槽，有时候你可能会用上',
-            tableAction: () => '表格的操作区域内容插槽，有时候可能会用上',
-          }}
-        </RTable>
+        ></RTable>
       </NSpace>
     )
   },

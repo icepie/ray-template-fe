@@ -7,7 +7,7 @@ const profile: AppRouteRecordRaw = {
   component: () => import('@/views/base/profile/index'),
   meta: {
     i18nKey: t('menu.Profile'),
-    icon: 'profile',
+    // icon: 'profile',
     hidden: true,
   },
 }

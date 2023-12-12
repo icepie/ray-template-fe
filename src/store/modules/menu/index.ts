@@ -161,7 +161,7 @@ export const piniaMenuStore = defineStore(
         if (!String(key).startsWith('/')) {
           /** 如果不是根路由, 则拼接完整路由并跳转 */
           const _path = getCompleteRoutePath(menuState.options, key)
-            .map((curr) => curr.key)
+            .map((curr: AppMenuOption) => curr.path)
             .join('/')
 
           router.push(_path)

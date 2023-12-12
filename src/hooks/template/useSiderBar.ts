@@ -39,7 +39,6 @@ const normalMenuTagOption = (target: CloseMenuTag, fc: string) => {
       console.warn(
         `${fc}: The incoming index ${target} did not match the corresponding item.`,
       )
-
       return
     }
 

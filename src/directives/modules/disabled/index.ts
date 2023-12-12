@@ -45,7 +45,6 @@ const disabledDirective: CustomDirectiveFC<HTMLElement, boolean> = () => {
       if (value === oldValue) {
         return
       }
-
       updateElementDisabledType(el, value)
     },
   }

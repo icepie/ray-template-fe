@@ -29,7 +29,7 @@
 import { NSpin } from 'naive-ui'
 
 import { spinProps } from 'naive-ui'
-import { getVariableToRefs } from '@/global-variable'
+import { getVariableToRefs, setVariable } from '@/global-variable'
 
 const GlobalSpin = defineComponent({
   name: 'GlobalSpin',
