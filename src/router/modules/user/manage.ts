@@ -8,10 +8,7 @@ const userManage: AppRouteRecordRaw = {
   meta: {
     i18nKey: t('menu.UserManage'),
     icon: 'other',
-    order: 991,
-    role: ['user'],
-    // keepAlive: true,
-    // hidden: true,
+    role: ['admin'],
   },
 }
 

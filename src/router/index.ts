@@ -1,4 +1,8 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import {
+  createRouter,
+  createWebHashHistory,
+  createWebHistory,
+} from 'vue-router'
 import { scrollViewToTop } from '@/router/helper/setupHelper'
 import { vueRouterRegister } from '@/router/helper/routerCopilot'
 import { useVueRouter } from '@/hooks/web'
@@ -6,7 +10,6 @@ import { useVueRouter } from '@/hooks/web'
 import constantRoutes from './routes'
 import type { App } from 'vue'
 import type { RouteRecordRaw, Router } from 'vue-router'
-import { createWebHistory } from 'vue-router'
 
 export let router: Router
 

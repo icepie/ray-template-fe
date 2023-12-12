@@ -1,14 +1,3 @@
-/**
- *
- * @author Ray <https://github.com/XiaoDaiGua-Ray>
- *
- * @date 2022-12-08
- *
- * @workspace ray-template
- *
- * @remark 今天也是元气满满撸代码的一天
- */
-
 import {
   NTag,
   NButton,
@@ -19,11 +8,22 @@ import {
   NSwitch,
   NSpace,
   NPopover,
+  NGrid,
+  NText,
+  NForm,
 } from 'naive-ui'
-import { RCollapseGrid, RTable, RIcon, RMoreDropdown } from '@/components'
+import {
+  RCollapseGrid,
+  RTable,
+  RIcon,
+  RMoreDropdown,
+  RModal,
+} from '@/components'
 
 import type { DataTableColumns } from 'naive-ui'
+import { NFormItem } from 'naive-ui'
 import { GetUserList } from '@/api/user'
+import CreateUser from './components/CreateUser'
 
 type RowData = {
   id: number
@@ -188,7 +188,7 @@ const UserManage = defineComponent({
       }
     })
 
-    onBeforeMount(() => {
+    onMounted(() => {
       refreshUserList()
     })
 
@@ -208,25 +208,43 @@ const UserManage = defineComponent({
       }
     }
 
+    const modal2 = ref(false)
+
     // 新增
     const handleAdd = () => {
       window.$message.info('新增')
+      modal2.value = true
+    }
+
+    const onSubmit = (data) => {
+      console.log('asdd', data)
+    }
+
+    const onCancel = () => {
+      window.$message.info('取消')
+      modal2.value = false
     }
 
     return {
       ...toRefs(state),
       tableData,
+      onSubmit,
       paginationRef,
       actionColumns,
       baseColumns,
       tableMenuOptions,
       handleMenuSelect,
       handleAdd,
+      modal2,
+      onCancel,
     }
   },
   render() {
     return (
       <NSpace wrapItem={false} vertical>
+        <RModal v-model:show={this.modal2} preset="card" title="新建用户">
+          <CreateUser onCancel={this.onCancel} />
+        </RModal>
         <RCollapseGrid
           bordered={false}
           collapsedRows={this.gridCollapsedRows}

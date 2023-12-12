@@ -35,18 +35,18 @@ import {
 } from './helper'
 import { useI18n } from '@/hooks/web'
 import { getAppRawRoutes } from '@/router/appRouteModules'
-import { useVueRouter } from '@/hooks/web'
 import { throttle } from 'lodash-es'
 import { useKeepAliveActions } from '@/store'
 
 import type { AppRouteRecordRaw } from '@/router/type'
 import type { AppMenuOption, MenuTagOptions } from '@/types/modules/app'
 import type { MenuState } from '@/store/modules/menu/type'
+import type { LocationQuery } from 'vue-router'
 
 export const piniaMenuStore = defineStore(
   'menu',
   () => {
-    const { router } = useVueRouter()
+    const router = useRouter()
     const route = useRoute()
     const { t } = useI18n()
     const { setKeepAliveInclude } = useKeepAliveActions()
@@ -59,8 +59,41 @@ export const piniaMenuStore = defineStore(
       breadcrumbOptions: [], // 面包屑菜单
       currentMenuOption: null, // 当前激活菜单项
     })
-
     const isSetupAppMenuLock = ref(true)
+    const isRootPathReg = new RegExp('/', 'g')
+
+    const resolveOption = (option: AppMenuOption) => {
+      const { meta } = option
+
+      /** 设置 label, i18nKey 优先级最高 */
+      const label = computed(() =>
+        meta?.i18nKey ? t(`${meta!.i18nKey}`) : meta?.noLocalTitle,
+      )
+      /** 拼装菜单项 */
+      const route = {
+        ...option,
+        key: option.path,
+        label: () =>
+          h(NEllipsis, null, {
+            default: () => label.value,
+          }),
+        breadcrumbLabel: label.value,
+        /** 检查该菜单项是否展示 */
+      } as AppMenuOption
+      /** 合并 icon */
+      const attr: AppMenuOption = Object.assign({}, route, {
+        icon: hasMenuIcon(option),
+      })
+
+      if (option.path === getCatchMenuKey()) {
+        /** 设置标签页(初始化时执行设置一次, 避免含有平级路由模式情况时出现不能正确设置标签页的情况) */
+        setMenuTagOptionsWhenMenuValueChange(option.path, attr)
+      }
+
+      attr.show = validMenuItemShow(attr)
+
+      return attr
+    }
 
     /**
      *
@@ -138,13 +171,26 @@ export const piniaMenuStore = defineStore(
      *
      * @param key 菜单更新后的 key
      * @param option 菜单当前 option 项
+     * @param query 路由参数
      *
      * @remark 修改 `menu key` 后的回调函数
      * @remark 修改后, 缓存当前选择 key 并且存储标签页与跳转页面(router push 操作)
+     *
+     * 如果 windowOpen 存在, 则直接打开新窗口，不会更新当前菜单状态，也不会做其他的操作
+     * 如果 sameLevel 存在，则会追加一层面包屑，并不会触发菜单更新与标签页更新
+     *
+     * 在执行更新操作后会做一些缓存操作
+     *
+     * 该方法是整个模板的核心驱动: 菜单、标签页、面包屑、浏览器标题等等的更新方法
+     *
+     * @example
+     * changeMenuModelValue('/dashboard',{ dashboard option  }) // 跳转页面至 dashboard，并且更新菜单状态、标签页、面包屑、浏览器标题等等
+     * changeMenuModelValue('/dashboard', { dashboard option }, { id: 1 }) // 执行更新操作，并且传递参数
      */
     const changeMenuModelValue = (
       key: string | number,
       option: AppMenuOption,
+      query?: LocationQuery,
     ) => {
       const { meta, path } = option
 
@@ -161,17 +207,23 @@ export const piniaMenuStore = defineStore(
         if (!String(key).startsWith('/')) {
           /** 如果不是根路由, 则拼接完整路由并跳转 */
           const _path = getCompleteRoutePath(menuState.options, key)
-            .map((curr: AppMenuOption) => curr.path)
+            .map((curr: AppMenuOption) => curr.key)
             .join('/')
 
-          router.push(_path)
+          router.push({
+            path: _path,
+            query,
+          })
         } else {
           /** 根路由直接跳转 */
-          router.push(path)
+          router.push({
+            path,
+            query,
+          })
         }
 
         /** 检查是否为根路由 */
-        const count = (path.match(new RegExp('/', 'g')) || []).length
+        const count = (path.match(isRootPathReg) || []).length
 
         /** 更新缓存队列 */
         setKeepAliveInclude(option as unknown as AppMenuOption)
@@ -202,33 +254,40 @@ export const piniaMenuStore = defineStore(
      * @remark 监听路由地址变化更新菜单状态
      * @remark 递归查找匹配项
      */
-    const updateMenuKeyWhenRouteUpdate = async (path: string) => {
-      // 获取 `/` 出现次数(如果为 1 则表示该路径为根路由路径)
-      const count = (path.match(new RegExp('/', 'g')) || []).length
-      let combinePath = path
+    const updateMenuKeyWhenRouteUpdate = async (
+      path: string,
+      query: LocationQuery,
+    ) => {
+      const [routePath] = path.split('?')
+      const count = (routePath.match(new RegExp('/', 'g')) || []).length // 如果获取长度为 1，则视为根路由
+
+      let combinePath = routePath
 
       if (count > 1) {
         // 如果不是跟路径则取出最后一项字符
-        const splitPath = path.split('/').filter((curr) => curr)
+        const splitPath = routePath.split('/').filter((curr) => curr)
 
         combinePath = splitPath[splitPath.length - 1]
       }
 
-      const findMenuOption = (pathKey: string, options: AppMenuOption[]) => {
-        for (const curr of options) {
-          if (curr.children?.length) {
-            findMenuOption(pathKey, curr.children)
-          }
-
-          if (pathKey === curr.key && !curr?.children?.length) {
-            changeMenuModelValue(pathKey, curr)
-
-            break
-          }
-        }
+      // 如果当前菜单 key 与路由地址相同，说明不是手动更新 url， 则不会触发更新
+      if (combinePath === menuState.menuKey) {
+        return
       }
 
-      findMenuOption(combinePath, menuState.options)
+      const findMenuOption = router
+        .getRoutes()
+        .find((curr) =>
+          count > 1 ? path === curr.path : combinePath === curr.path,
+        )
+
+      if (findMenuOption) {
+        changeMenuModelValue(
+          count > 1 ? combinePath : path,
+          resolveOption(findMenuOption as unknown as AppMenuOption),
+          query,
+        )
+      }
     }
 
     /**
@@ -238,39 +297,6 @@ export const piniaMenuStore = defineStore(
      */
     const setupAppMenu = () => {
       return new Promise<void>((resolve) => {
-        const resolveOption = (option: AppMenuOption) => {
-          const { meta } = option
-
-          /** 设置 label, i18nKey 优先级最高 */
-          const label = computed(() =>
-            meta?.i18nKey ? t(`${meta!.i18nKey}`) : meta?.noLocalTitle,
-          )
-          /** 拼装菜单项 */
-          const route = {
-            ...option,
-            key: option.path,
-            label: () =>
-              h(NEllipsis, null, {
-                default: () => label.value,
-              }),
-            breadcrumbLabel: label.value,
-            /** 检查该菜单项是否展示 */
-          } as AppMenuOption
-          /** 合并 icon */
-          const attr: AppMenuOption = Object.assign({}, route, {
-            icon: hasMenuIcon(option),
-          })
-
-          if (option.path === getCatchMenuKey()) {
-            /** 设置标签页(初始化时执行设置一次, 避免含有平级路由模式情况时出现不能正确设置标签页的情况) */
-            setMenuTagOptionsWhenMenuValueChange(option.path, attr)
-          }
-
-          attr.show = validMenuItemShow(attr)
-
-          return attr
-        }
-
         const resolveRoutes = (routes: AppMenuOption[], index: number) => {
           const catchArr: AppMenuOption[] = []
 
@@ -332,9 +358,11 @@ export const piniaMenuStore = defineStore(
      * 该方法仅执行一次
      */
     const setupPiniaMenuStore = async () => {
-      if (isSetupAppMenuLock.value) {
-        await setupAppMenu()
+      if (!isSetupAppMenuLock.value) {
+        return
       }
+
+      await setupAppMenu()
 
       isSetupAppMenuLock.value = false
     }
@@ -342,12 +370,12 @@ export const piniaMenuStore = defineStore(
     /** 监听路由变化并且更新路由菜单与菜单标签 */
     watch(
       () => route.fullPath,
-      async (newData) => {
-        const reg = /^([^?]+)/
-        const match = newData.match(reg)?.[1]
-
+      async (ndata, odata) => {
         await setupPiniaMenuStore()
-        await updateMenuKeyWhenRouteUpdate(match || '')
+
+        if (ndata !== odata) {
+          await updateMenuKeyWhenRouteUpdate(ndata, route.query)
+        }
       },
       {
         immediate: true,
