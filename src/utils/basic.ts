@@ -154,9 +154,7 @@ export const downloadAnyFile = (
     try {
       if (typeof data === 'string') {
         downloadBase64File(data, fileName)
-        resolve()
-
-        return
+        return resolve()
       }
 
       if (data instanceof ArrayBuffer) {
@@ -166,9 +164,7 @@ export const downloadAnyFile = (
       } else if (data instanceof File || data instanceof Blob) {
         blobData = data
       } else {
-        reject(new Error('downloadAnyFile: Unsupported data type.'))
-
-        return
+        return reject(new Error('downloadAnyFile: Unsupported data type.'))
       }
 
       const url = URL.createObjectURL(blobData)
@@ -185,18 +181,18 @@ export const downloadAnyFile = (
 
       link.addEventListener('load', () => {
         remove()
-        resolve()
+        return resolve()
       })
 
       link.addEventListener('error', (error) => {
         remove()
-        reject(error)
+        return reject(error)
       })
 
       document.body.appendChild(link)
       link.click()
     } catch (error) {
-      reject(error)
+      return reject(error)
     }
   })
 }
