@@ -15,7 +15,7 @@ import { NCard, NDataTable, NDropdown, NSpace } from 'naive-ui'
 import Size from './components/Size'
 import Fullscreen from './components/Fullscreen'
 import C from './components/C'
-import Print from './components/Print'
+// import Print from './components/Print'
 
 import props from './props'
 import { call, renderNode } from '@/utils/vue'
@@ -149,7 +149,7 @@ export default defineComponent({
     const tool = (p: typeof props) => {
       const renderDefaultToolOptions = () => (
         <>
-          <Print {...p} />
+          {/* <Print {...p} /> */}
           <Size {...p} onChangeSize={changeTableSize.bind(this)} />
           <Fullscreen />
           <C {...p} onUpdateColumn={updateTableColumn.bind(this)} />

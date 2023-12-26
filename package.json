@@ -24,6 +24,7 @@
     ]
   },
   "dependencies": {
+    "@types/fabric": "5.3.6",
     "@vueuse/core": "^10.7.0",
     "awesome-qr": "2.1.5-rc.0",
     "axios": "^1.6.2",
@@ -32,6 +33,7 @@
     "currency.js": "^2.0.4",
     "dayjs": "^1.11.10",
     "echarts": "^5.4.3",
+    "fabric": "5.3.0",
     "interactjs": "1.10.21",
     "lodash-es": "^4.17.21",
     "mockjs": "1.1.0",

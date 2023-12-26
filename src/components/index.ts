@@ -8,6 +8,7 @@ export * from './RMoreDropdown'
 export * from './RQRCode'
 export * from './RTable'
 export * from './RTransitionComponent'
+export * from './TempEditor'
 
 // 导出自定义组件类型
 export type * from './RChart/src/type'
