@@ -52,7 +52,6 @@ function onlyBuildOptions(mode: string) {
     viteCDNPlugin({
       // modules 顺序 vue, vue-demi 必须保持当前顺序加载，否则会出现加载错误问题
       modules: [
-<<<<<<< HEAD:vite.pliugin.config.ts
         'vue',
         'vue-demi',
         'pinia',
@@ -66,56 +65,6 @@ function onlyBuildOptions(mode: string) {
         'print-js',
         'clipboard',
         'lodash-es',
-=======
-        {
-          name: 'vue',
-          global: 'Vue',
-          resolve: 'https://cdn.staticfile.org/vue/3.3.11/vue.global.min.js',
-        },
-        {
-          name: 'vue-demi',
-          global: 'VueDemi',
-          resolve:
-            'https://cdn.staticfile.org/vue-demi/0.14.6/index.iife.min.js',
-        },
-        {
-          name: 'naive-ui',
-          global: 'naive',
-          resolve: 'https://cdn.staticfile.org/naive-ui/2.35.0/index.min.js',
-        },
-        {
-          name: 'pinia',
-          global: 'Pinia',
-          resolve: 'https://cdn.staticfile.org/pinia/2.1.7/pinia.iife.min.js',
-        },
-        {
-          name: 'vue-router',
-          global: 'VueRouter',
-          resolve:
-            'https://cdn.staticfile.org/vue-router/4.2.5/vue-router.global.min.js',
-        },
-        {
-          name: 'vue-i18n',
-          global: 'VueI18n',
-          resolve:
-            'https://cdn.staticfile.org/vue-i18n/9.8.0/vue-i18n.global.min.js',
-        },
-        {
-          name: 'echarts',
-          global: 'echarts',
-          resolve: 'https://cdn.staticfile.org/echarts/5.4.3/echarts.min.js',
-        },
-        {
-          name: 'xlsx',
-          global: 'XLSX',
-          resolve: 'https://cdn.staticfile.org/xlsx/0.18.5/xlsx.full.min.js',
-        },
-        {
-          name: 'axios',
-          global: 'axios',
-          resolve: 'https://cdn.staticfile.org/axios/1.6.2/axios.min.js',
-        },
->>>>>>> 45be191 (version: v4.4.6):vite.plugin.config.ts
       ],
     }),
   ]
