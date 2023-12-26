@@ -22,7 +22,7 @@ export default defineComponent({
   name: 'TablePrint',
   props,
   setup(props) {
-    const { uuidTable } = inject<TableProvider>(
+    const { wrapperRef } = inject<TableProvider>(
       config.tableKey,
       {} as TableProvider,
     )
@@ -31,12 +31,17 @@ export default defineComponent({
       const { printTableOptions } = props
       const { type = 'html', printOptions = {} } = printTableOptions ?? {}
 
-      const options = Object.assign(printOptions, {
-        printable: uuidTable,
-        type: type,
-        documentTitle: printOptions.documentTitle
-          ? printOptions.documentTitle
-          : '表格',
+      if (
+        printOptions.documentTitle === '' ||
+        printOptions.documentTitle === void 0 ||
+        printOptions.documentTitle === null
+      ) {
+        printOptions.documentTitle = typeof title === 'string' ? title : ''
+      }
+
+      printDom(wrapperRef, {
+        printOptions,
+        domToImageOptions,
       })
 
       print(document.getElementById(uuidTable), options)

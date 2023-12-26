@@ -1,5 +1,110 @@
 # CHANGE LOG
 
+<<<<<<< HEAD
+=======
+## 4.4.6
+
+## Feats
+
+- `vite` 配置项
+  - `cdn`
+    - 移除不能被 `cdn` 引入的包配置
+- 移除 `vue-demi` 本地包依赖，仅在 `cdn` 引入。因为某些插件依赖改包
+
+## Fixes
+
+- `hooks` 相关
+  - `UseDomToImageOptions` 方法
+    - 修复 `options.imageType` 必填的错误
+    - 修复该方法在执行失败时，没有正确的返回错误状态与执行错误钩子方法。现在在执行失败或者获取未正确获取到元素的时候，会返回 `Promise.reject` 状态，并且会执行 `createdError` 钩子方法
+    - 修改 `createdError` 钩子方法回调参数类型
+    - 修改 `created` 钩子方法回调参数类型
+    - 修复 `finally` 方法不能正确执行的问题
+- `utils` 相关
+  - `printDom` 方法
+    - 新增配置项 `base64` 为 `true`
+    - 修改 `printOptions` 类型，剔除 `base64` 属性，因为该配置项始终应该为 `true`，即使你手动配置为 `false`，也会被强制转换为 `true`
+- `components` 相关
+  - `RTable`
+    - 修复打印的时候，可能会出现颜色不正确的问题
+    - 现在打印的时候，会将整个表格（包括：表头、表格、表格分页、表格底部区域）全部打印
+
+## 4.4.5
+
+## Feats
+
+- 切换 `cdn` 源至 `https://www.staticfile.org/`
+- 更新 `vue` 版本至 `3.3.11`
+
+## 4.4.4
+
+升级 `vite` 版本至 `5.0.8`。提升构建速度，并且消除了烦人的 `terser` 警告（未配置该项都会被警告，确实很烦）。
+
+现在能自动的根据 `main` 分支更新构建发布了。
+
+新增 `pre-commit` 检查。现在在提交代码前，会自动检查代码规范，如果不符合规范则会阻止提交。
+
+## Feats
+
+- 更新 `vite` 版本至 `5.0.8`
+- `tsconfig` 文件 `compilerOptions.moduleResolution` 选项由 `Node` 改为 `bundler`
+- `utils` 包相关改动
+  - 统一导出、导入行为，现在统一使用 `import { xxx } from '@/utils'` 导入
+  - 剔除 `basic 包 print` 方法，现在使用 `utils/dom` 包中的 `usePrint` 替代
+  - `utils/dom` 包相关细节
+    - 新增 `printDom` 方法，取代直接调用 `print-js` 方法调用打印。该方法会先将 dom 转换为 `base64` 再调用 `print-js` 方法，避免一些诡异问题。`RTable` 组件打印功能已经由该方法重写。并且可以配置 `printDom` 方法的所有参数，细节请查看 `PrintDomOptions` 类型
+  - `utils/element` 包中一些方法，改为 `effectDispose` 方法注销 `effect`
+- `husky` 相关
+  - 新增 `commit-msg`, `common.sh` 文件，用于检查 `commit` 信息
+  - 新增工作流程，自动构建发布
+- `alias` 别名相关
+  - 移除 `@use-utils` 别名
+  - `@use-images` 更改为 `@images`
+  - `@use-api` 更改为 `@api`
+- `hooks` 包相关
+  - 新增 `usePrint` 方法，允许 ref dom 直接调用打印
+  - 新增 `useDomToImage` 方法，用于直接输出 dom 为 `base64`, `blob` 等
+- `components` 包相关
+  - `RTable` 打印时，如果未手动配置 `documentTitle` 属性，则会自动获取 `title`，如果 `title` 属性为 `string` 类型，则会默认使用该值作为 `documentTitle` 属性。但是如果未获取到 `title` 并且未配置 `documentTitle` 属性，则会默认的将 `documentTitle` 赋值为 `''`，也就是说默认输出浏览器标题
+- 移除 `ReactiveTransform` 所有支持
+- 相关插件更新
+  - `pinia` 版本更新至 `2.1.7`
+  - `vue-router` 版本更新至 `4.2.5`
+  - `interactjs` 版本更新至 `1.10.26`
+  - `axios` 版本更新至 `1.6.2`
+- `Echarts Themes` 更新背景色默认为 `transparent`。如果需要更新配置，只需要在配置 `options` 时增 `backgroundColor` 属性即可
+
+```ts
+const options = {
+  backgroundColor: 'your color',
+  ...your options
+}
+```
+
+## 4.4.3
+
+更新 `vue` 版本至 `3.3.10`。
+
+补充了一些代码的注释（慢慢还账-，-）。
+
+## Feats
+
+- 更新 `vue` 版本至 `3.3.10`
+- 新增 `useElementFullscreen` 方法，用于全屏元素。但是该全屏区别于浏览器全屏元素，仅是网页全屏效果
+- 使用 `useElementFullscreen` 方法重构 `maximize` 方法
+- `changeMenuModelValue`
+  - 现在方法支持第三个参数配置跳转时，是否携带参数
+  - 避免递归查找的时候，一些不必要的操作，优化性能
+- 核心模块 `Menu` 的优化细节
+  - 使用 `router.getRoutes` 方法替代以前的递归查找（`updateMenuKeyWhenRouteUpdate` 方法）
+  - 优化当菜单更新时、url 地址更新时都会重复检查的问题，现在检查是惰性的
+
+## Fixes
+
+- 修复了通过 `url` 携带参数跳转页面，参数可能会被拦截并且丢失的问题
+- 修复了 `url` 跳转页面导致多次更新的问题
+
+>>>>>>> 45be191 (version: v4.4.6)
 ## 4.4.2
 
 这是一个具有破坏性更新的版本，如果你使用了该模板，那么你需要做一些改动。
