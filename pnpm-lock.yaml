@@ -124,6 +124,9 @@ devDependencies:
   autoprefixer:
     specifier: ^10.4.16
     version: 10.4.16(postcss@8.4.32)
+  code-inspector-plugin:
+    specifier: 0.3.1
+    version: 0.3.1
   depcheck:
     specifier: ^1.4.7
     version: 1.4.7
@@ -2309,6 +2312,12 @@ packages:
     resolution: {integrity: sha512-7HhHjtERjqlNbZtqNqy2rckN/SpOOlmDliet+lP7k+eKZEjPk3DgyeU9lIXLdeLz0uBbbVp+9Qdow9wJWgwwfg==}
     dev: false
 
+  /async@2.6.4:
+    resolution: {integrity: sha512-mzo5dfJYwAn29PeiJ0zvwTo04zj8HDJj0Mn8TD7sno7q12prdbnasKJHhkm2c1LgrhlJ0teaea8860oxi51mGA==}
+    dependencies:
+      lodash: 4.17.21
+    dev: true
+
   /async@3.2.5:
     resolution: {integrity: sha512-baNZyqaaLhyLVKm/DlvdW051MSgO6b8eVfIezl9E5PqWxFgzLm/wQntEW4zOytVburDEr0JlALEpdOFwvErLsg==}
     dev: true
@@ -2593,6 +2602,14 @@ packages:
       supports-color: 5.5.0
     dev: true
 
+  /chalk@4.1.1:
+    resolution: {integrity: sha512-diHzdDKxcU+bAsUboHLPEDQiw0qEe0qd7SYUn3HgcFlWgbDcfLGswOHYeGrHKzG9z6UYf01d9VFMfZxPM1xZSg==}
+    engines: {node: '>=10'}
+    dependencies:
+      ansi-styles: 4.3.0
+      supports-color: 7.2.0
+    dev: true
+
   /chalk@4.1.2:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
     engines: {node: '>=10'}
@@ -2689,6 +2706,27 @@ packages:
       qs: 6.11.2
       raw-body: 2.5.2
       type-is: 1.6.18
+    dev: true
+
+  /code-inspector-core@0.3.1:
+    resolution: {integrity: sha512-dq/2pmdoFYjj6dHwAY2EjEanlY26ACKDCjrcoCry+wKGqjRcIjYnVE1FuwyE8BLn+XD+qrh8qO/gBIhi0/qwUg==}
+    dependencies:
+      '@vue/compiler-dom': 3.3.13
+      chalk: 4.1.1
+      portfinder: 1.0.32
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  /code-inspector-plugin@0.3.1:
+    resolution: {integrity: sha512-AWyBSkYIaMyakdqyE8wpjTHODhAuJUN/xjUhL+Wwhtnl7AHkAZIYXuVUfRwDNH62OL2pASvQZfNbBvzZc+Pyow==}
+    dependencies:
+      chalk: 4.1.1
+      code-inspector-core: 0.3.1
+      vite-code-inspector-plugin: 0.3.1
+      webpack-code-inspector-plugin: 0.3.1
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /codepage@1.15.0:
@@ -5633,6 +5671,13 @@ packages:
       is-extendable: 1.0.1
     dev: true
 
+  /mkdirp@0.5.6:
+    resolution: {integrity: sha512-FP+p8RB8OWpF3YZBCrP5gtADmtXApB5AMLn+vdyA+PyxCjrCs00mjyUozssO33cwDeT3wNGdLxJ5M//YqtHAJw==}
+    hasBin: true
+    dependencies:
+      minimist: 1.2.8
+    dev: true
+
   /mkdirp@1.0.4:
     resolution: {integrity: sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==}
     engines: {node: '>=10'}
@@ -6147,6 +6192,17 @@ packages:
     resolution: {integrity: sha512-gQR3WpIgNIKwBMVLkpMUeR3e1/E1y42bqDQZfql+kDeXd8COYfM8PQA4X6y7a8u9Ua9FHmsrrmirW2vHs45hWg==}
     dependencies:
       semver-compare: 1.0.0
+    dev: true
+
+  /portfinder@1.0.32:
+    resolution: {integrity: sha512-on2ZJVVDXRADWE6jnQaX0ioEylzgBpQk8r55NE4wjXW1ZxO+BgDlY6DXwj20i0V8eB4SenDQ00WEaxfiIQPcxg==}
+    engines: {node: '>= 0.12.0'}
+    dependencies:
+      async: 2.6.4
+      debug: 3.2.7
+      mkdirp: 0.5.6
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /posix-character-classes@0.1.1:
@@ -7624,6 +7680,14 @@ packages:
       vue: 3.3.13(typescript@5.3.3)
     dev: false
 
+  /vite-code-inspector-plugin@0.3.1:
+    resolution: {integrity: sha512-R5YSG+S/OrcI1gsuu20iJL16zd4NRCZzE0LOHs5gWldbvqZMZcnWcEetLhEcsxasWHWKXtac/6or2dkjUVOdTw==}
+    dependencies:
+      code-inspector-core: 0.3.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /vite-plugin-cdn2@0.15.2:
     resolution: {integrity: sha512-aco0DQqeep+u+CGohn5k3U6TIjytLagbVr29SHd1r6LqcsC1ye+viW/65XyigrPLs7DfCk93yFhV0qOuepl/1g==}
     dependencies:
@@ -7957,6 +8021,14 @@ packages:
     requiresBuild: true
     dev: false
     optional: true
+
+  /webpack-code-inspector-plugin@0.3.1:
+    resolution: {integrity: sha512-uKFzdoeEj7Zb9XTP9SEfPBQ0zmN8sh2l7oHrRy3Kp8c9C+PLxYgn+lpzAkXpycNxugrv1fUxvJqy9TFR28bK3A==}
+    dependencies:
+      code-inspector-core: 0.3.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
 
   /webpack-sources@3.2.3:
     resolution: {integrity: sha512-/DyMEOrDgLKKIG0fmvtz+4dUX/3Ghozwgm6iPp8KRhvn+eQf9+Q7GWxVNMk3+uCPWfdXYC4ExGBckIXdFEfH1w==}

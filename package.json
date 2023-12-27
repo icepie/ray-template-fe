@@ -65,6 +65,7 @@
     "@vue/eslint-config-prettier": "^8.0.0",
     "@vue/eslint-config-typescript": "^11.0.3",
     "autoprefixer": "^10.4.16",
+    "code-inspector-plugin": "0.3.1",
     "depcheck": "^1.4.7",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",

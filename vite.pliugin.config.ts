@@ -26,8 +26,8 @@ import mockDevServerPlugin from 'vite-plugin-mock-dev-server'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import unpluginViteComponents from 'unplugin-vue-components/vite'
 import { cdn as viteCDNPlugin } from 'vite-plugin-cdn2'
-
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
+import { CodeInspectorPlugin } from 'code-inspector-plugin'
 
 import config from './cfg'
 
@@ -162,6 +162,10 @@ function baseOptions(mode: string) {
       appPrimaryColor,
     }),
     viteInspect(), // 仅适用于开发模式(检查 `Vite` 插件的中间状态)
+    CodeInspectorPlugin({
+      editor: 'code',
+      bundler: 'vite',
+    }),
     mockDevServerPlugin({
       include: ['mock/**/*.mock.ts'],
       exclude: [
